@@ -43,7 +43,7 @@ class SupervisedWrapperExtractor:
             raise ValueError("Given page is NULL/empty")
 
         if self.retrain_best_wrappers:
-            self.__fill_best_wrappers()
+            self.best_wrappers = self.__get_best_wrappers()
             self.retrain_best_wrappers = False
 
         soup = BeautifulSoup(page, "lxml")
@@ -53,14 +53,6 @@ class SupervisedWrapperExtractor:
             results[label] = wrapper.extract(soup, data_schemaorg)
 
         return results
-
-    def __fill_best_wrappers(self):
-        """
-        Gets the best wrappers from all trained pages and put them
-        in self.best_wrappers
-        """
-        self.best_wrappers = self.__get_best_wrappers()
-        self.retrain_best_wrappers = False
 
     def __get_best_wrappers(self):
         """
@@ -138,7 +130,11 @@ class SupervisedWrapperExtractor:
                 wrappers = []
                 for wrapper_attributes in value:
                     wrapper = WrapperGroup()
-                    wrapper.selector, wrapper.attr, wrapper.regex, wrapper.index = wrapper_attributes
+                    wrapper.selector, wrapper.attr, wrapper.regex, wrapper.index = wrapper_attributes[0]
+                    for wrap_attributes in wrapper_attributes[1:]:
+                        wrap = WrapperCss()
+                        wrap.selector, wrap.attr, wrap.regex, wrap.index = wrap_attributes
+                        wrapper.wrappers.append(wrap)
                     wrappers.append(wrapper)
                 self.best_wrappers[label] = Wrappers(wrappers)
 
