@@ -91,8 +91,8 @@ class WrapperCss(AbstractWrapper):
         :param data_schemaorg: the meta data of the page
         :type soup: BeautifulSoup
         :type data_schemaorg: dict/list
-        
-        
+
+
         :return: the list of values found with the selector and then formated with the regex
         :rtype: [str]/str
         """
@@ -170,7 +170,7 @@ class WrapperMeta(AbstractWrapper):
         """
         if not self.selector:
             return []
-        
+
         return [schemaorg.get_value(data_schemaorg, self.selector)]
 
 
@@ -248,7 +248,7 @@ class WrapperGroup(WrapperCss):  # Wrapper group does not support meta selectors
         values = []
         if not self.selector:
             return values
-        
+
         selectors = [wrapper.selector for wrapper in self.wrappers]
         selections = soup.select(self.selector)
         children = []
@@ -264,7 +264,7 @@ class WrapperGroup(WrapperCss):  # Wrapper group does not support meta selectors
                 values.append(value)
 
         return values
-    
+
     def __find_common_parent(self, soup):
         """
 

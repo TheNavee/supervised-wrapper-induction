@@ -38,7 +38,7 @@ def find_best_matches(soup, data_schemaorg, value):
         best_matches = __get_best_items(matches)
 
         for best_match in best_matches:
-                best_match.score -= best_match.length_value
+            best_match.score -= best_match.length_value
 
         better_best_matches = __get_best_items(best_matches)
 

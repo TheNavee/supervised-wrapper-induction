@@ -1,5 +1,4 @@
 # coding=utf-8
-from fuzzywuzzy import fuzz
 import warnings
 
 

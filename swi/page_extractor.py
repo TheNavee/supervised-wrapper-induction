@@ -60,7 +60,7 @@ class PageExtractor:
             self.wrappers_dict[label] = wrappers
 
         return self.wrappers_dict
-    
+
     def __get_wrappers_from_value(self, value):
         """
 
@@ -74,6 +74,7 @@ class PageExtractor:
         wrappers = []
         matches = find_best_matches(self.soup, self.data_schemaorg, value)
         for index, match in enumerate(matches):
+
             #  match is a path in the schema.org data
             if not match.is_css:
                 wrapper = WrapperMeta()
@@ -84,11 +85,10 @@ class PageExtractor:
             else:
                 wrapper = WrapperCss()
                 wrapper.build(soup=self.soup, value=value, best_match=match.soup, attr_best_match=match.attr)
-
             wrappers.append(wrapper)
 
         return wrappers
-    
+
     def __get_wrappers_from_values(self, values):
         """
 

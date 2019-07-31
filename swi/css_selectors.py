@@ -91,7 +91,7 @@ def simplify_fragmented_selector(soup, fragmented_selector):
 
     :return: the selector simplified
     :rtype: [[str]]
-    
+
     removes the useless tags from a selector list
     a useless tag is a tag that you can remove from a selector
     and this selector yields the same result that with this tag

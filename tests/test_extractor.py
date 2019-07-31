@@ -25,18 +25,17 @@ class TestExtractor(object):
         train_set_tunisimmo_2 = {"prix": "900DN", "contact":"SAMI", "localisation":"Ariana", "titre": "Appartement S+3 avec place parking - 900DN", "description":"appartement s+3 avec place de parking . résidente gardé avec deux ascenseurs.salon + 3 chambre + salle d'eau + salle de bain . avec 4 climatisseurset 3 balcons.4 ieme etages", "images":["https://www.tunisimmo.com/images/2018/11/15/5193/thumb_appartement-s3-avec-place-parking_3.jpg", "https://www.tunisimmo.com/images/2018/11/15/5193/appartement-s3-avec-place-parking_2.jpg"]}
         train_set_tunisimmo_3 = {"prix": "1500DN", "contact":"Le Jasmin Immobiliere", "localisation":"Sousse", "titre": "Coquet Bungalow Vue Piscine - 1500DN", "description":"LE JASMIN immobilière met en location un joli bungalow S+1, surface de 80 m2, à Marina El Kantaoui. Se compose d’une chambre à coucher , sallon avec balcon vue magnifique sur piscine, une cuisine équipée et d'une salle de bain. Pour connaître plus d'information ou pour organiser un RDV, contacter nous par email ou téléphonez pendant les heures de bureau.", "images":["https://www.tunisimmo.com/images/2018/11/15/5254/thumb_coquet-bungalow-vue-piscine_5.jpg", "https://www.tunisimmo.com/images/2018/11/15/5254/thumb_coquet-bungalow-vue-piscine_2.jpg"]}
         
-        
         with open("tests/samples/tunisimmo_1.html", 'r') as f:
             html1 = f.read()
         with open("tests/samples/tunisimmo_3.html", 'r') as f:
             html2 = f.read()
         with open("tests/samples/tunisimmo_3.html", 'r') as f:
             html3 = f.read()
-        
+
         extractor_tunisimmo = Extractor()
         extractor_tunisimmo.add_train_page(html1, train_set_tunisimmo_1)
         extractor_tunisimmo.add_train_page(html2, train_set_tunisimmo_2)
-        #extractor_tunisimmo.add_train_page(html3, train_set_tunisimmo_3)
+        # extractor_tunisimmo.add_train_page(html3, train_set_tunisimmo_3)
 
         res1 = {'prix': '290DN', 'contact': "moncef", 'localisation': 'Monastir', 'titre': 'Coquet studio  - 290DN', 'description': "Description\nStudio composé d'un salon, cuisine à l'américaine, chambre à coucher, salle d'eau avec douche wc lavabo, un petit balcon séchoir, et branchement d'une machine à laver. Gaz de ville, climatiseur, connexion ADSL, parabole collective.Au 2ème étage d'un immeuble récent, ascenseur, interphone, accès avec une clé, parking gardé la nuit.L'immeuble Violettes 3 (banefsej 3) est situé derrière l'ENIT, et proche de Skanes kobba.NON meublé, location à l'année, garanties exigées.290 DT par mois et caution de 2 mois de loyer.", 'images': ['https://www.tunisimmo.com/images/2018/11/15/5122/thumb_coquet-studio_1.jpg', 'https://www.tunisimmo.com/images/2018/11/15/5122/thumb_coquet-studio_2.jpg', 'https://www.tunisimmo.com/images/2018/11/15/5122/thumb_coquet-studio_3.jpg', 'https://www.tunisimmo.com/images/2018/11/15/5122/thumb_coquet-studio_4.jpg', 'https://www.tunisimmo.com/images/2018/11/15/5122/thumb_coquet-studio_5.jpg']}
 
@@ -75,8 +74,7 @@ class TestExtractor(object):
 
     def test_extract_lodgis(self):
         train_set_lodgis = {"price": "€308,900", 'surface':'34.1', "address": "Rue De Belleville, Paris 19°", "images": ["https://images.lodgis.com/photos/lpa/ap/19849/orange/carousel/g/apartment-paris-19-kitchen-P12.jpg?v=1562856328", "https://images.lodgis.com/photos/lpa/ap/19849/orange/carousel/g/apartment-paris-19-bedroom--H12.jpg?v=1562856328"]}
-        
-        
+
         with open("tests/samples/lodgis_1.html", 'r') as f:
             html1 = f.read()
         extractor_lodgis = Extractor()
@@ -150,4 +148,3 @@ class TestExtractor(object):
         print(extractor_weheartit.best_wrappers["hearts"].selector)
 
         assert pred1 == res1 and pred2 == res2
-        

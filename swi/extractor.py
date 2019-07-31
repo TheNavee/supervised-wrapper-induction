@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from fuzzywuzzy import fuzz
 import extruct
 import pickle
-from .wrapper import WrapperCss, WrapperMeta, WrapperGroup
+from .wrapper import WrapperCss, WrapperMeta, WrapperGroup, Wrappers
 
 
 class SupervisedWrapperExtractor:
@@ -44,6 +44,7 @@ class SupervisedWrapperExtractor:
 
         if self.retrain_best_wrappers:
             self.__fill_best_wrappers()
+            self.retrain_best_wrappers = False
 
         soup = BeautifulSoup(page, "lxml")
         data_schemaorg = extruct.extract(page)
@@ -110,21 +111,32 @@ class SupervisedWrapperExtractor:
         :type dictionary: dict
 
         fills best wrappers with the ones from dictionary
-        
-        example input: {"price":[".price", "value", ".*", False], "images":[["json-ld", 0, "image"], ".*", True]}
+        the if there is Wrappers (the class) they must be inside another list (see 'images' below)
+        example input: {"price":[".price", "value", ".*", 0], "images":[[[".lazyImg"], "src", ".*, 0]]}
         """
         for label, value in dictionary.items():
-            if len(value) == 4:  # regular css_selector
-                if value[3]:
-                    wrapper = WrapperGroup()
-                else:
-                    wrapper = WrapperCss()
-                wrapper.selector, wrapper.attr, wrapper.regex, _ = value
-            else:  # schema.org
-                wrapper = WrapperMeta()
-                wrapper.selector, wrapper.regex, _ = value
+            isGroup = False
+            if len(value) < 2 or type(value[1]) is not str:  # value[1] is always the regex
+                isGroup = True
+            if not isGroup:
+                if len(value) == 4:  # regular css_selector
+                    if isGroup:
+                        wrapper = WrapperGroup()
+                    else:
+                        wrapper = WrapperCss()
+                    wrapper.selector, wrapper.attr, wrapper.regex, wrapper.index = value
+                else:  # schema.org
+                    wrapper = WrapperMeta()
+                    wrapper.selector, wrapper.regex, _ = value
 
-            self.best_wrappers[label] = wrapper
+                self.best_wrappers[label] = wrapper
+            else:
+                wrappers = []
+                for wrapper_attributes in value:
+                    wrapper = WrapperGroup()
+                    wrapper.selector, wrapper.attr, wrapper.regex, wrapper.index = wrapper_attributes
+                    wrappers.append(wrapper)
+                self.best_wrappers[label] = Wrappers(wrappers)
 
     # load best_wrappers
     def load(self, path):
