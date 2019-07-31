@@ -82,6 +82,10 @@ class SupervisedWrapperExtractor:
                     for page2 in self.extracted_pages:
                         train_set2 = page2.train_set
 
+                        # label was not trained for this page
+                        if not label in train_set2.keys():
+                            continue
+
                         if not isinstance(train_set2[label], list):
                             expected_values = [train_set2[label]]
                         else:
